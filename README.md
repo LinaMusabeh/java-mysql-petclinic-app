@@ -1,7 +1,10 @@
+# java-mysql-petclinic-app
+## Deploying Java app and MySQL on GKE
+using the source code and the architecture of the @techiescamp pitclinic application and deploying it on Google Kubernetes Engine
 
-redrawing the architecture of the cluster:
+### the architecture of the cluster
 
-![[Pasted image 20250930090839.png | 400]]
+<img width="400" height="500" alt="image" src="https://github.com/user-attachments/assets/923b3024-4ba4-4544-b29e-13e4abc0440c" />
 
 ### Creating an image for the App
 clone the actual java app:
@@ -10,11 +13,9 @@ clone the actual java app:
 git clone https://github.com/spring-projects/spring-petclinic.git
 ```
 
-change your working directory to the directory of the project.
-
 creating a multi-stage docker file the first stage is for the build and the other is for the runtime:
 
-```DSL
+```shell
 FROM maven:4.0.0-rc-4-eclipse-temurin-25-noble AS builder
 WORKDIR /app  
 ENV MAVEN_OPTS="-Xmx2048m"
@@ -47,12 +48,12 @@ using the default zone `us-west1-a`, wrote the following command
 gcloud container clusters create petclinicapp
 ```
 
-the cluster is created and ready:
+the cluster is created and ready, and we can see it in the console:
 
-![[README-20250930111948864.png]]
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/be708f2a-545b-4b67-b5ce-a4f9d28d3c96" />
 
 
-creating two name spaces to logically separate the services and give them secrets:
+creating two name spaces to logically separate the services and give them Secrets:
 
 ```
 kubectl create ns petclinic-app
@@ -97,9 +98,9 @@ kubectl apply -f <YML_FILE_PATH>
 
 two times for each file
 
-navigate google console to the secret and config maps tab and see the created secrets
+navigateing google console to the secret and config maps tab and see the created secrets
 
-![[Pasted image 20250930121501.png]]
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/07445c16-3b98-4792-b6eb-71cbe6d603df" />
 
 ## Creating ConfigMaps
 the config map for the file will do the following:
@@ -116,13 +117,12 @@ the configmap for the database will do the following:
 - Inserts demo data for testing and development.
 
 
-then apply the configmap files
+apply the configmap files
 ```
 kubectl apply -f <PATH>
 ```
+<img width="500" height="270" alt="image" src="https://github.com/user-attachments/assets/8ffa0b25-763a-4d2e-8bb0-5281590f4252" />
 
-![[Pasted image 20250930142014.png]]
-![[README-20250930142006933.png]]
 
 ___________________________
 
@@ -134,9 +134,14 @@ the pod will be created from the `Statefulset` specs
 inside the same file we create the `NodePort` service that will serve as an entry point.
 the file is `mysql.yml`
 
-![[README-20250930145851859.png]]
+inside the Gateways, Services & Ingress tab: 
 
-![[Pasted image 20250930145938.png]]
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/125e3158-15d1-43d0-b120-5adbb4af877a" />
+
+inside the Object Browser:
+
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/15047f35-3ff4-448f-a19d-36f5006c049e" />
+
 
 
 _________________________
@@ -153,30 +158,13 @@ the file includes also the creation of health tests
 deployment.apps/java-app created
 service/java-app-service created
 ```
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/7ae0ec2c-1a2d-4415-bd7b-23fa3c777f18" />
 
-![[Pasted image 20250930150656.png]]
 
 navigate to the Workloads:
-![[Pasted image 20250930150813.png]]
 
-when i deployed i faced the following problem 
-![[Pasted image 20250930151927.png]]
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/a8595730-dc1d-4aea-82e4-37b7894e5207" />
 
-the jar file was not found.
-
-i created a container on my docker desktop to see where the jar file is, and the name was different than what was in the example so be careful to that
-
-![[README-20250930152109844.png]]
-![[Pasted image 20250930152115.png]]
-
-all you have to do, if any mistake happened and you want to modify the yaml file, write the `apply` command again 
-
-```
-deployment.apps/java-app configured
-service/java-app-service unchanged
-```
-
-![[README-20250930153003356.png]]
 
 ### Deploy the HorizontalPodAutoscaler (HPA)
 
@@ -193,9 +181,6 @@ java-app-7b7c99f4b8-ztxpn   11m          250Mi
 
 then apply the `hpa.yml` file 
 
-![[Pasted image 20250930173049.png]]
-
-
 _______________
 ### Set a Firewall rule 
 
@@ -208,5 +193,5 @@ go to the node where the app is and get the public IP address of it, access the 
 
 and good job!
 
-![[README-20250930185158564.png]]
+<img width="2559" height="1052" alt="image" src="https://github.com/user-attachments/assets/51adf0df-12a4-4f9f-b39d-f4eef2c674b1" />
 
