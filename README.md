@@ -1,7 +1,10 @@
-
+# Deploying Java + MySQL Application on GKE
+this project is done using the guid of the @techiescamp and source code of the application 
+__________________________________________________________________________________________________
 redrawing the architecture of the cluster:
 
-![[Pasted image 20250930090839.png | 400]]
+<img width="400" height="600" alt="image" src="https://github.com/user-attachments/assets/4c680feb-dd57-4dd2-b0d6-c8069aad3e6c" />
+
 
 ### Creating an image for the App
 clone the actual java app:
@@ -14,7 +17,7 @@ change your working directory to the directory of the project.
 
 creating a multi-stage docker file the first stage is for the build and the other is for the runtime:
 
-```DSL
+```shell
 FROM maven:4.0.0-rc-4-eclipse-temurin-25-noble AS builder
 WORKDIR /app  
 ENV MAVEN_OPTS="-Xmx2048m"
@@ -34,7 +37,9 @@ added environment variable to increase the memory during the build of the app.
 
 building the image from the Dockerfile:
 
-`docker build -t linasaeed/petclinicapp:1.0 .`
+```
+docker build -t linasaeed/petclinicapp:1.0 .
+```
 
 
 _________________
@@ -46,4 +51,6 @@ using the default zone `us-west1-a`, wrote the following command
 ```
 gcloud container clusters create petclinicapp
 ```
+cluster is created
 
+<img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/0536638c-6832-41e8-af68-6263f2247dcf" />
