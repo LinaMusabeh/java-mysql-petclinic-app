@@ -39,7 +39,7 @@ building the image from the Dockerfile:
 
 
 _________________
-### Deploying the app on GKE
+### Deploying the app to GKE
 
 ##### Create the cluster
 using the default zone `us-west1-a`, wrote the following command
